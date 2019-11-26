@@ -5,16 +5,22 @@ import torch.nn as nn
 import model as model_no
 import transform as trans
 import argparse
+import os
 torch.set_num_threads(1)
 
 parser = argparse.ArgumentParser(description='PyTorch finetune experiment')
+parser.add_argument('--gpu_id', type=str, nargs='?', default='0', help="device id to run")
 parser.add_argument('--trainpath', type=str, default='./', metavar='S',
                         help='path of training dataset')
 parser.add_argument('--testpath', type=str, default='./', metavar='S',
                         help='path of testing dataset')
 parser.add_argument('--method', type=str, default='l2', metavar='S',
                         help='method:l2 or l2+bss')
+parser.add_argument('--lr', type=float, default=0.01,
+                        help='init learning rate')
 args = parser.parse_args()
+
+os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu_id
 
 data_transforms = {
     'train': trans.transform_train(resize_size=256, crop_size=224),
@@ -151,7 +157,7 @@ num_iter = 9002
 torch.set_printoptions(threshold=10000000)
 for iter_num in range(1, num_iter+1):
     ResNet.train(True)
-    optimizer = ft_lr_scheduler(param_lr, optimizer, iter_num, iter=6000, new=0.1, init_lr=0.01)
+    optimizer = ft_lr_scheduler(param_lr, optimizer, iter_num, iter=6000, new=0.1, init_lr=args.lr)
     optimizer.zero_grad()
     if iter_num % len_source == 0:
         iter_source = iter(dset_loaders["train"])
