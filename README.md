@@ -24,7 +24,7 @@ CUB-200-2011 can be found here: http://www.vision.caltech.edu/visipedia/CUB-200-
 
 Oxford-IIIT Pet can be found here: https://www.robots.ox.ac.uk/~vgg/data/pets/
 
-All lists about subset is shown in ft-datalist.
+All lists about subsets are shown in ft-datalist.
 
 
 ## Training on one dataset:
